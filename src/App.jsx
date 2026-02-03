@@ -400,9 +400,12 @@ function Auth({ isDark, onAuthComplete }) {
 /* ═══════════════════════════════════════════════
    FLOATING SOCIAL  ICONS
    ═══════════════════════════════════════════════ */
-function SocialMediaIcons({ isDark, isAuthenticated }) {
+function SocialMediaIcons({ isDark, isAuthenticated, windowWidth }) {
   const [hov, setHov] = useState(null);
   const c = th(isDark);
+  const isSmall = windowWidth < 420;
+  const btnSize = isSmall ? 40 : 46;
+  const rightOffset = isSmall ? "12px" : "20px";
 
   const links = [
     { icon: <Mail size={18} />,      href: "mailto:info@bkoffsetprinting.com", label: "Email",     show: isAuthenticated },
@@ -412,16 +415,19 @@ function SocialMediaIcons({ isDark, isAuthenticated }) {
 
   return (
     <div style={{
-      position: "fixed", bottom: "calc(20px + env(safe-area-inset-bottom, 0px))", right: "20px",
-      display: "flex", flexDirection: "column", gap: "10px", zIndex: 1100,
+      position: "fixed", bottom: "calc(12px + env(safe-area-inset-bottom, 0px))", right: rightOffset,
+      display: "flex", flexDirection: "column", gap: isSmall ? "8px" : "10px", zIndex: 1100,
+      pointerEvents: "auto",
     }}>
       {links.filter(l => l.show !== false).map((link) => (
         <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
           aria-label={link.label}
           onMouseEnter={() => setHov(link.label)}
           onMouseLeave={() => setHov(null)}
+          onTouchStart={() => setHov(link.label)}
+          onTouchEnd={() => setTimeout(() => setHov(null), 800)}
           style={{
-            width: "46px", height: "46px", borderRadius: "50%",
+            width: `${btnSize}px`, height: `${btnSize}px`, borderRadius: "50%",
             background: hov === link.label ? T.grad : c.surf,
             color:      hov === link.label ? "#fff" : c.textMid,
             display: "flex", alignItems: "center", justifyContent: "center",
@@ -434,21 +440,23 @@ function SocialMediaIcons({ isDark, isAuthenticated }) {
           }}
         >
           {link.icon}
-          <span style={{
-            position: "absolute", right: "calc(100% + 10px)", top: "50%", transform: "translateY(-50%)",
-            background: isDark ? T.surfDark2 : T.textLight,
-            color: "#fff", padding: "5px 10px", borderRadius: T.radiusSm,
-            fontSize: "12px", fontWeight: 600, whiteSpace: "nowrap",
-            opacity: hov === link.label ? 1 : 0, pointerEvents: "none",
-            transition: "opacity 0.2s",
-          }}>
-            {link.label}
+          {!isSmall && (
             <span style={{
-              position: "absolute", left: "100%", top: "50%", transform: "translateY(-50%)",
-              borderLeft: `5px solid ${isDark ? T.surfDark2 : T.textLight}`,
-              borderTop: "5px solid transparent", borderBottom: "5px solid transparent",
-            }} />
-          </span>
+              position: "absolute", right: "calc(100% + 10px)", top: "50%", transform: "translateY(-50%)",
+              background: isDark ? T.surfDark2 : T.textLight,
+              color: "#fff", padding: "5px 10px", borderRadius: T.radiusSm,
+              fontSize: "12px", fontWeight: 600, whiteSpace: "nowrap",
+              opacity: hov === link.label ? 1 : 0, pointerEvents: "none",
+              transition: "opacity 0.2s",
+            }}>
+              {link.label}
+              <span style={{
+                position: "absolute", left: "100%", top: "50%", transform: "translateY(-50%)",
+                borderLeft: `5px solid ${isDark ? T.surfDark2 : T.textLight}`,
+                borderTop: "5px solid transparent", borderBottom: "5px solid transparent",
+              }} />
+            </span>
+          )}
         </a>
       ))}
     </div>
@@ -597,7 +605,7 @@ export default function App() {
       woTitle:      "WEB OFFSET PRINTING",
       woTagline:    "SPEED. SCALE. PRECISION.",
       woHeroTitle:  "Built for High-Volume Excellence",
-      woHeroDesc:   "Web offset printing is designed for non-stop production, and at B&K Offset Printing, speed is only the beginning. Our advanced multi-colour rotary presses deliver consistent quality at exceptional speeds, making them ideal for magazines, catalogues, brochures, inserts, and promotional publications produced in large volumes.",
+      woHeroDesc:   "Web offset printing is designed for non-stop production, and at BK Offset Printing, speed is only the beginning. Our advanced multi-colour rotary presses deliver consistent quality at exceptional speeds, making them ideal for magazines, catalogues, brochures, inserts, and promotional publications produced in large volumes.",
       woHeroDesc2:  "Every rotation combines power, stability, and accuracy, ensuring sharp images and uniform colour reproduction—even across millions of impressions.",
       woPerfTitle:  "Performance That Goes Beyond Printing",
       woPerfDesc:   "Our web offset systems are equipped with integrated inline finishing, allowing multiple processes to happen in a single run. This means faster turnaround times and flawless results.",
@@ -674,7 +682,7 @@ export default function App() {
             display: "block", boxShadow: `0 4px 14px ${T.primaryGlow}`,
           }} />
           <span style={{ fontSize: isMobile ? "15px" : "17px", fontWeight: 700, letterSpacing: "-0.5px" }}>
-            {isTablet ? "BK Offset" : isMobile ? "BK" : "BK Offset Printing"}
+            {isTablet ? "BK Offset" : isMobile ? "BK" : "BK Offset"}
           </span>
         </div>
 
@@ -750,7 +758,7 @@ export default function App() {
       {/* FOOTER */}
       <Footer isAuth={isAuth} isDark={isDark} phoneNumber={phoneNumber} whatsappLink={whatsappLink} isMobile={isMobile} />
 
-      <SocialMediaIcons isDark={isDark} isAuthenticated={isAuth} />
+      <SocialMediaIcons isDark={isDark} isAuthenticated={isAuth} windowWidth={windowWidth} />
 
       {showAuth && <Auth isDark={isDark} onAuthComplete={handleAuthComplete} />}
     </div>
