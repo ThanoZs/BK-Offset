@@ -1,3 +1,12 @@
+/* Ensure page background covers full viewport and remove default browser margins */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .page {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   min-height: 100vh;
