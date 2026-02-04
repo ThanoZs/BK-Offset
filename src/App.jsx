@@ -1588,10 +1588,10 @@ function HeroSection({
     <section
       ref={ref}
       style={{
-        padding: isMobile ? "80px 20px 60px" : "120px 32px 90px",
+        padding: isMobile ? "80px 20px 60px" : "600px 32px 90px",
         textAlign: "center",
         background: isDark
-          ? `linear-gradient(rgba(12,35,64,0.85), rgba(2,6,23,0.90)), url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80')`
+          ? `linear-gradient(rgba(12,35,64,0.85), rgba(270,6,23,0.90)), url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80')`
           : `linear-gradient(rgba(224,242,254,0.80), rgba(255,255,255,0.88)), url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -1619,11 +1619,13 @@ function HeroSection({
 
       <div
         style={{
-          maxWidth: 780,
-          margin: "0 auto",
-          position: "relative",
+          position: "absolute",
+          top: "50%",
+          left: 0,
+          right: 0,
+          transform: "translateY(-50%)",
           zIndex: 1,
-          padding: "0 16px",
+
         }}
       >
         <div
